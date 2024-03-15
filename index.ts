@@ -25,9 +25,8 @@ program.command('feature <name>')
 program.command('finish-feature <name>')
   .description('Finish a feature and merge it into develop')
   .action((name) => {
-    console.log(`Finishing feature ${name}...`);
-    execSync(`git checkout develop && git merge feature/${name} && git branch -d feature/${name} && git push origin develop`, { stdio: 'inherit' });
-    console.log(`Feature ${name} finished and merged into develop`);
+    console.log(`Creating a pull request for feature '${name}' into 'develop'...`);
+    execSync(`git checkout feature/${name} && git push origin feature/${name} && gh pr create --base develop --head feature/${name} --title "Merge feature: ${name}" --body "This PR integrates the completed feature '${name}' into the develop branch."`, { stdio: 'inherit' });
   });
   
 
@@ -44,9 +43,9 @@ program.command('release <version>')
 program.command('finish-release <version>')
   .description('Finish a release and merge it into main and develop')
   .action((version) => {
-    console.log(`Finishing release ${version}...`);
-    execSync(`git checkout main && git merge release/${version} && git tag -a ${version} -m 'Release ${version}' && git push origin main && git checkout develop && git merge release/${version} && git branch -d release/${version} && git push origin develop && git push --tags`, { stdio: 'inherit' });
-    console.log(`Release ${version} finished and merged into main and develop`);
+    console.log(`Creating a pull request for release '${version}' into 'main'...`);
+    execSync(`git checkout release/${version} && git push origin release/${version} && gh pr create --base main --head release/${version} --title "Release version ${version}" --body "This PR releases version ${version} to production."`, { stdio: 'inherit' });
+    console.log(`Remember to manually merge the release '${version}' into 'develop' after merging this PR to 'main'.`);
   });
 
 // Start a new hotfix
@@ -62,9 +61,9 @@ program.command('hotfix <version>')
 program.command('finish-hotfix <version>')
   .description('Finish a hotfix and merge it into main and develop')
   .action((version) => {
-    console.log(`Finishing hotfix ${version}...`);
-    execSync(`git checkout main && git merge hotfix/${version} && git tag -a ${version} -m 'Hotfix ${version}' && git push origin main && git checkout develop && git merge hotfix/${version} && git branch -d hotfix/${version} && git push origin develop && git push --tags`, { stdio: 'inherit' });
-    console.log(`Hotfix ${version} finished and merged into main and develop`);
+    console.log(`Creating a pull request for hotfix '${version}' into 'main'...`);
+    execSync(`git checkout hotfix/${version} && git push origin hotfix/${version} && gh pr create --base main --head hotfix/${version} --title "Hotfix ${version}" --body "This PR applies hotfix '${version}' to production."`, { stdio: 'inherit' });
+    console.log(`Remember to manually merge the hotfix '${version}' into 'develop' after merging this PR to 'main'.`);
   });
 
 program.parse(process.argv);
