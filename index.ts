@@ -1,4 +1,4 @@
-import { program } from 'commander';
+import program from './src/core/cli';
 import { execSync } from 'child_process';
 
 program.version('1.0.0');
