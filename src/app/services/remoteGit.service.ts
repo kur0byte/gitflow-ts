@@ -1,11 +1,11 @@
 import { inject, injectable } from "inversify";
-import { SERVICE_IDENTIFIER } from "../di/identifiers";
+import { REPOSITORY_IDENTIFIER } from "../di/identifiers";
 import { IRemoteGit } from "../interfaces";
 
 @injectable()
 class RemoteGitService {
     constructor(
-        @inject(SERVICE_IDENTIFIER.RemoteGitRepository) private remoteGitRepository: IRemoteGit
+        @inject(REPOSITORY_IDENTIFIER.RemoteGitRepository) private remoteGitRepository: IRemoteGit
     ){}
 
     async createPullRequest(

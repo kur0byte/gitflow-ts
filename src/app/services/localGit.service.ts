@@ -1,11 +1,11 @@
 import { inject, injectable } from 'inversify';
 import { ILocalGit } from '../interfaces';
-import { SERVICE_IDENTIFIER } from '../di/identifiers';
+import { REPOSITORY_IDENTIFIER } from '../di/identifiers';
 
 @injectable()
 class LocalGitService {
   constructor(
-    @inject(SERVICE_IDENTIFIER.LocalGitRepository) private LocalGitRepository: ILocalGit
+    @inject(REPOSITORY_IDENTIFIER.LocalGitRepository) private LocalGitRepository: ILocalGit
   ) {}
 
     async initializeRepo(): Promise<void> {

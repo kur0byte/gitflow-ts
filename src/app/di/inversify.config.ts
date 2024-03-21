@@ -9,7 +9,7 @@ import GithubBashRepository from '../repositories/github/github_bash.repository'
 import { LocalGitService, RemoteGitService } from '../services';
 import { config } from '../../config';
 
-export function initializeRepositories(container: Container, identifiers: any) {
+export function initializeRepositories(container: Container, identifiers:any) {
   // Remote Git Host Factory
   switch (config.gitRemoteHost) {
     case 'github':
