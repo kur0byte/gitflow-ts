@@ -1,6 +1,6 @@
 import { inject, injectable } from 'inversify';
 import { ILocalGit } from '../interfaces';
-import { SERVICE_IDENTIFIER } from '../identifiers';
+import { SERVICE_IDENTIFIER } from '../di/identifiers';
 
 @injectable()
 class LocalGitService {

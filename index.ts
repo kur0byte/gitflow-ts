@@ -1,5 +1,5 @@
 #!/usr/bin/env npx ts-node
-import 'dotenv/config';
+
 import program from './src/core/cli';
 import 'reflect-metadata';
 import { ReviewBaseFlow } from './src/app/controllers';

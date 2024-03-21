@@ -1,5 +1,5 @@
 import { inject, injectable } from "inversify";
-import { SERVICE_IDENTIFIER } from "../identifiers";
+import { SERVICE_IDENTIFIER } from "../di/identifiers";
 import { IRemoteGit } from "../interfaces";
 
 @injectable()

@@ -1,7 +1,7 @@
 import { injectable } from "inversify";
-import { asyncExec } from "../../../utils";
+import { asyncExec } from "../../utils";
 import {IRemoteGit} from "../../interfaces";
-import { parseCommand } from "../../../utils/commandParser.handler";
+import { parseCommand } from "../../utils/commandParser.handler";
 
 @injectable()
 class GithubBashRepository implements IRemoteGit {

@@ -1,14 +1,13 @@
-// import {Command} from 'commander';c
-// const { Command } = require('commander');
 import { Command } from '@commander-js/extra-typings';
+import { config } from '../config';
 const program = new Command();
 
 program
   .version('1.0.0')
-  .option('-r, --repoManager <type>', 'Specify the repository manager', 'github')
+  .option('-r, --repoManager <type>', 'Specify the repository manager', config.gitRemoteHost)
   .option('-v, --verbose', 'output extra debugging')
   .option('-s, --silent', 'do not output any message')
-  .option('-c, --config <type>', 'set config type (default: "default")')
+  // .option('-c, --config <type>', 'set config type (default: "default")')
   .option('-d, --dry-run', 'show what would have been done without actually doing it');
 
 program.on('option:verbose', function () {

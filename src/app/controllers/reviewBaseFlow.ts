@@ -1,11 +1,9 @@
-import { SERVICE_IDENTIFIER } from "../identifiers";
 import { ILocalGit, IRemoteGit } from "../interfaces";
-import container from "../inversify.config";
-import promptly from 'promptly';
+import {container as DI, SERVICE_IDENTIFIER} from "../di";
 
 class ReviewBaseFlow {
-    git = container.get<ILocalGit>(SERVICE_IDENTIFIER.LocalGitService);
-    remoteGit = container.get<IRemoteGit>(SERVICE_IDENTIFIER.RemoteGitService);
+    git = DI.get<ILocalGit>(SERVICE_IDENTIFIER.LocalGitService);
+    remoteGit = DI.get<IRemoteGit>(SERVICE_IDENTIFIER.RemoteGitService);
 
     async initRepo(opts: any) {
         await this.git.initializeRepo()
