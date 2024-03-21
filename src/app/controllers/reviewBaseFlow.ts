@@ -10,12 +10,15 @@ class ReviewBaseFlow {
     };
     
     async startFeature (name: string){
+        await this.git.switchBranch('develop')
         await this.git.createBranch(name, 'feature')
         await this.git.pushToRemote(name, `feature/${name}`)
     }
     
     async finishFeature (opts:any, name: string){
         const {description, repoManager} = opts
+        // TODO: fetch the remote branches created by the user
+        // TODO:input an option list with available branches to pr
         await this.remoteGit.createPullRequest(
             name, 
             'develop', 
