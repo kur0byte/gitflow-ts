@@ -1,9 +1,11 @@
-import { Command } from 'commander';
-
+// import {Command} from 'commander';c
+// const { Command } = require('commander');
+import { Command } from '@commander-js/extra-typings';
 const program = new Command();
 
 program
   .version('1.0.0')
+  .option('-r, --repoManager <type>', 'Specify the repository manager', 'github')
   .option('-v, --verbose', 'output extra debugging')
   .option('-s, --silent', 'do not output any message')
   .option('-c, --config <type>', 'set config type (default: "default")')
