@@ -2,9 +2,9 @@
   "name": "gitflow-cli",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
-    "start": "node index.js",
+    "start": "npx zx ./dist/index.js",
     "build": "npx tsc --build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -12,11 +12,17 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@commander-js/extra-typings": "^12.0.1",
+    "@types/promptly": "^3.0.5",
     "commander": "^12.0.0",
-    "env": "^0.0.2"
+    "dotenv": "^16.4.5",
+    "inversify": "^6.0.2",
+    "promptly": "^3.2.0",
+    "reflect-metadata": "^0.2.1"
   },
   "devDependencies": {
-    "@types/node": "^20.11.27",
+    "@types/node": "^20.11.29",
+    "ts-node": "^10.9.2",
     "typescript": "^5.4.2"
   }
 }
