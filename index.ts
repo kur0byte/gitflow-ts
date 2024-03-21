@@ -24,12 +24,11 @@ program.command('feature <name>')
 // Finish a feature
 program.command('finish-feature <name>')
   .description('Finish a feature and merge it into develop')
-  .action(async (name: any) => {
-
-    const options: any = program.opts()
+  .option('-d, --description <description>', 'Description of the feature')
+  .action(async (name: any, options:any) => {
     const controller = new ReviewBaseFlow()
     await controller.finishFeature(options, name)
-});
+  })
 
 // Start a new release
 program.command('release <version>')
