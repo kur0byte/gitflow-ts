@@ -29,7 +29,7 @@ program.command('finish-feature <name>')
     const options: any = program.opts()
     const controller = new ReviewBaseFlow()
     await controller.finishFeature(options, name)
-});
+  })
 
 // Start a new release
 program.command('release <version>')

@@ -17,6 +17,8 @@ class ReviewBaseFlow {
     
     async finishFeature (opts:any, name: string){
         const {description, repoManager} = opts
+        // TODO: fetch the remote branches created by the user
+        // TODO:input an option list with available branches to pr
         await this.remoteGit.createPullRequest(
             `feature/${name}`, 
             'develop', 
