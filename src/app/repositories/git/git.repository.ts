@@ -35,7 +35,7 @@ class LocalGitRepository implements ILocalGit {
 
   async pushToRemote(toBranch: string, upStream: boolean = false): Promise<void> {
     // const command = `git push origin ${toBranch}`
-    const command = `git push ${upStream ? '--set-upstream' : null} origin ${toBranch}`
+    const command = `git push ${upStream ? '--set-upstream' : ''} origin ${toBranch}`
     // const command = `echo "pushed from origin to ${toBranch}"`;
     await asyncExec(command);
     // await this.executeAndLogSuccess(command);   

@@ -36,7 +36,7 @@ class ReviewBaseFlow {
     async finishRelease (opts:any, name: string){
         const {description, repoManager} = opts
         await this.remoteGit.createPullRequest(
-            name, 
+            `release/${name}`, 
             'main', 
             name,
             description
