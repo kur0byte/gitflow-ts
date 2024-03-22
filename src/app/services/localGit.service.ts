@@ -24,8 +24,8 @@ class LocalGitService {
         await this.LocalGitRepository.mergeBranch(mergingBranch)
     }
 
-    async pushToRemote(fromBranch: string, toBranch: string): Promise<void> {
-        await this.LocalGitRepository.pushToRemote(fromBranch, toBranch)
+    async pushToRemote(toBranch: string): Promise<void> {
+        await this.LocalGitRepository.pushToRemote(toBranch)
     }
 
     async switchBranch(branch: string): Promise<void> {
