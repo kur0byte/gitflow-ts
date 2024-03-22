@@ -18,7 +18,7 @@ class ReviewBaseFlow {
     async finishFeature (opts:any, name: string){
         const {description, repoManager} = opts
         await this.remoteGit.createPullRequest(
-            name, 
+            `feature/${name}`, 
             'develop', 
             name,
             description
