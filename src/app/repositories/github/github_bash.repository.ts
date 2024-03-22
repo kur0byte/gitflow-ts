@@ -12,7 +12,7 @@ class GithubBashRepository implements IRemoteGit {
       title: title,
       body: description
     }
-    const command = `gh pr create --base "${flags.head}" --head "${flags.base}" --title "${flags.title}" --body "${flags.body}"`;
+    const command = `gh pr create --base "${flags.base}" --title "${flags.title}" --body "${flags.body}"`;
     // const command = parseCommand(`echo pr create`, flags);
     await this.executeAndLogSuccess(command);
   }
