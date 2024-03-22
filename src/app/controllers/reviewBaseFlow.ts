@@ -10,8 +10,9 @@ class ReviewBaseFlow {
     };
     
     async startFeature (name: string){
+        await this.git.switchBranch(`develop`)
         await this.git.createBranch(name, 'feature')
-        await this.git.pushToRemote(name, `feature/${name}`)
+        await this.git.pushToRemote(`feature/${name}`, true)
     }
     
     async finishFeature (opts:any, name: string){
@@ -25,8 +26,9 @@ class ReviewBaseFlow {
     }
     
     async startRelease (name: string){
+        await this.git.switchBranch(`develop`)
         await this.git.createBranch(name, 'release')
-        await this.git.pushToRemote(name, `release/${name}`)
+        await this.git.pushToRemote(`release/${name}`, true)
     }
     
     async finishRelease (opts:any, name: string){
@@ -40,18 +42,19 @@ class ReviewBaseFlow {
     }
         
     async startHotfix(name: string){    
+        await this.git.switchBranch(`develop`)
         await this.git.createBranch(name, 'hotfix')
-        await this.git.pushToRemote(name, `hotfix/${name}`)
+        await this.git.pushToRemote(`hotfix/${name}`, true)
     }
     
     async finishHotfix (name: string, version: string){
-        await this.git.pushToRemote(name, `hotfix/${name}`)
-        
         // merge and push remote branch to main and develop
         await this.git.switchBranch('main')
         await this.git.mergeBranch(`hotfix/${name}`)
+        await this.git.pushToRemote(`hotfix/${name}`)
         await this.git.switchBranch('develop')
         await this.git.mergeBranch(`hotfix/${name}`)
+        await this.git.pushToRemote(`hotfix/${name}`)
     
         // deletes the hotfix branch
         await this.git.deleteBranch(`hotfix/${name}`)
