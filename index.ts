@@ -2,7 +2,7 @@
 
 import program from './src/core/cli';
 import 'reflect-metadata';
-import { ReviewBaseFlow } from './src/app/controllers';
+import { ReviewBaseFlow } from './src/core/controllers';
 
 // Initialize Gitflow in the repository
 program.command('init')

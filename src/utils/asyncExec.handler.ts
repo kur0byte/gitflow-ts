@@ -7,6 +7,7 @@ export async function asyncExec(command: string) {
   try {
     const result = await asyncPromise(command);
     console.log(result.stdout);
+    return result.stdout;
   } catch (error: any) {
     // If error has a `stderr` property, log it for more details
     console.error(`Error executing command: ${error.message}`);

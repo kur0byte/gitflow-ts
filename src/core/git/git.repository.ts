@@ -1,15 +1,20 @@
-import {ILocalGit} from '../../interfaces';
+import {ILocalGit} from '../interfaces';
 import { injectable } from "inversify";
 import { asyncExec } from "../../utils";
 
 @injectable()
-class LocalGitRepository implements ILocalGit {
+export default class LocalGitRepository implements ILocalGit {
   async initializeRepo(): Promise<void> {
     // const command = 'git init'
     // const command = `echo "git repo initialized"`
     const command = `git checkout -b "testtest"`
     await asyncExec(command);
     // await this.executeAndLogSuccess(command)
+  }
+
+  async getCurrentBranch(): Promise<string> {
+    const command = 'git branch --show-current'
+    return (await asyncExec(command)).trim();
   }
 
   async deleteBranch(branchName: string): Promise<void> {
@@ -65,5 +70,3 @@ class LocalGitRepository implements ILocalGit {
     }
   }
 }
-
-export default LocalGitRepository;

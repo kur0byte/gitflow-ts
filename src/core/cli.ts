@@ -1,12 +1,12 @@
 import { Command } from '@commander-js/extra-typings';
-import { config } from '../config';
+import { config } from '../../config';
 const program = new Command();
 
 program
   .version('1.0.0')
-  .option('-r, --repoManager <type>', 'Specify the repository manager', config.gitRemoteHost)
   .option('-v, --verbose', 'output extra debugging')
   .option('-s, --silent', 'do not output any message')
+  .option('-r, --repoManager <type>', 'Specify the repository manager', config.gitRemoteHost)
   // .option('-c, --config <type>', 'set config type (default: "default")')
   // .option('-d, --dry-run', 'show what would have been done without actually doing it');
 

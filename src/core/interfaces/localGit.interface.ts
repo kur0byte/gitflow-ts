@@ -8,6 +8,7 @@ interface ILocalGit {
   logError(error: string): void;
   logSuccess(message: string): void
   executeAndLogSuccess(command: string): Promise<void>
+  getCurrentBranch(): Promise<string>
 }
 export default ILocalGit;
   
