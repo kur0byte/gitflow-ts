@@ -86,14 +86,14 @@ class ReviewBaseFlow {
     async finishHotfix (version: string){
         // merge and push remote branch to main and develop
         await this.git.switchBranch('main')
-        await this.git.mergeBranch(`hotfix/${name}`)
-        await this.git.pushToRemote(`hotfix/${name}`)
+        await this.git.mergeBranch(`hotfix/${version}`)
+        await this.git.pushToRemote(`hotfix/${version}`)
         await this.git.switchBranch('develop')
-        await this.git.mergeBranch(`hotfix/${name}`)
-        await this.git.pushToRemote(`hotfix/${name}`)
+        await this.git.mergeBranch(`hotfix/${version}`)
+        await this.git.pushToRemote(`hotfix/${version}`)
     
         // deletes the hotfix branch
-        await this.git.deleteBranch(`hotfix/${name}`)
+        await this.git.deleteBranch(`hotfix/${version}`)
     }
 }
 
