@@ -1,72 +1,67 @@
 import {ILocalGit} from '../interfaces';
 import { injectable } from "inversify";
-import { asyncExec } from "../../utils";
+import { syncExec } from '../../utils/asyncExec.handler';
 
 @injectable()
 export default class LocalGitRepository implements ILocalGit {
-  async initializeRepo(): Promise<void> {
-    // const command = 'git init'
-    // const command = `echo "git repo initialized"`
-    const command = `git checkout -b "testtest"`
-    await asyncExec(command);
-    // await this.executeAndLogSuccess(command)
+  initializeRepo() {
+    const command = 'git init'
+    const successMsg = 'Repository initialized successfully';
+    const errorMsg = 'Error initializing repository';
+    return syncExec(command, successMsg, errorMsg);
   }
 
-  async getCurrentBranch(): Promise<string> {
+  getCurrentBranch() {
     const command = 'git branch --show-current'
-    return (await asyncExec(command)).trim();
+    const successMsg = 'Current branch retrieved successfully';
+    const errorMsg = 'Error retrieving current branch';
+    const currBranch = syncExec(command, successMsg, errorMsg).trim()
+    console.log(currBranch)
+    return currBranch;
   }
 
-  async deleteBranch(branchName: string): Promise<void> {
+  deleteBranch(branchName: string){
     const command = `git branch -D ${branchName}`
-    // const command = `echo "deleted branch: ${branchName}"`
-    await asyncExec(command);
-    // await this.executeAndLogSuccess(command);
+    const successMsg = `Branch ${branchName} deleted successfully`;
+    const errorMsg = `Error deleting branch ${branchName}`;
+    return syncExec(command, successMsg, errorMsg);
   }
 
-  async switchBranch(branch: string): Promise<void> {
+  switchBranch(branch: string) {
     const command = `git checkout ${branch}`
-    // const command = `echo "switched to ${branch}"`
-    await asyncExec(command);
-    // await this.executeAndLogSuccess(command);
+    const successMsg = `Switched to branch ${branch} successfully`;
+    const errorMsg = `Error switching to branch ${branch}`;
+    return syncExec(command, successMsg, errorMsg);
   }
 
-  async mergeBranch(mergingBranch: string): Promise<void> {
+  mergeBranch(mergingBranch: string) {
     const command = `git merge ${mergingBranch}`
-    // const command = `echo "merged ${mergingBranch}"`
-    await asyncExec(command);
-    // await this.executeAndLogSuccess(command);
+    const successMsg = `Branch ${mergingBranch} merged successfully`;
+    const errorMsg = `Error merging branch ${mergingBranch}`;
+    return syncExec(command, successMsg, errorMsg);
   }
 
-  async pushToRemote(toBranch: string, upStream: boolean = false): Promise<void> {
-    // const command = `git push origin ${toBranch}`
+  pushToRemote(toBranch: string, upStream: boolean = false) {
     const command = `git push ${upStream ? '--set-upstream' : ''} origin ${toBranch}`
-    // const command = `echo "pushed from origin to ${toBranch}"`;
-    await asyncExec(command);
-    // await this.executeAndLogSuccess(command);   
+    const successMsg = `Branch ${toBranch} pushed successfully`;
+    const errorMsg = `Error pushing branch ${toBranch}`;
+    return syncExec(command, successMsg, errorMsg);
   }
   
-  async createBranch(name:string, type:string) {
+  createBranch(name:string, type:string) {
     const command = `git checkout -b ${type}/${name}`;
-    // const command = `echo "${type} branch created: ${type}/${name}"`;
-    await asyncExec(command);
-    // await this.executeAndLogSuccess(command);
+    const successMsg = `Branch ${name} created successfully`;
+    const errorMsg = `Error creating branch ${name}`;
+    return syncExec(command, successMsg, errorMsg);
   }
 
-  logSuccess(message: string): void {
-    console.log(`Success: ${message}`);
-  }
-  
-  logError(error: string): void {
-    console.error(`Error: ${error}`);
-  }
-    
-  async executeAndLogSuccess(command: string): Promise<void> {
-    try {
-        await asyncExec(command);
-        this.logSuccess(`Command "${command}" executed successfully.`);
-    } catch (error) {
-        this.logError(`Command "${command}" failed with error: ${error}`);
-    }
+  getRemoteRepoName(){
+    const command = 'git config --get remote.origin.url'
+    const successMsg = 'Remote repository name retrieved successfully';
+    const errorMsg = 'Error retrieving remote repository name';
+    const url = syncExec(command, successMsg, errorMsg);
+    const repoNameWithExtension = url.split('/').pop();
+    const repoName = repoNameWithExtension?.split('.').shift();
+    return repoName;
   }
 }

@@ -1,5 +1,6 @@
 import { promisify } from 'util';
-import { exec as execNonPromise } from 'child_process';
+import { exec, exec as execNonPromise, execSync } from 'child_process';
+import { Command } from '@commander-js/extra-typings';
 
 const asyncPromise = promisify(execNonPromise);
 
@@ -18,4 +19,22 @@ export async function asyncExec(command: string) {
   }
 }
 
-export default asyncExec;
+/**
+ * Executes a command synchronously
+ * @param {string} command The command to execute
+ * @param {string} successMsg The message to log if the command is successful
+ * @param {string} errorMsg The message to log if the command fails
+ * @returns The result of the command
+ * @throws If the command fails
+ * @example syncExec('echo "Hello, World!"', 'Command executed successfully', 'Command failed');
+ */
+export function syncExec(command: string, successMsg: string, errorMsg: string): string {
+  try {
+    const result = execSync(command, { encoding: 'utf8' })
+    console.log({successMsg, result});
+    return result;
+  } catch (error) {
+    console.error(errorMsg);
+    throw error;
+  }
+} 

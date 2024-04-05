@@ -1,27 +1,30 @@
 import { ILocalGit, IRemoteGit } from "../interfaces";
 import {container as DI, SERVICE_IDENTIFIER} from "../../di";
 import inquirer, { PromptModule } from "inquirer"
+import { config } from "../../../config";
+import { featurePullRequestInputs } from "../../utils/prFlow.handler";
 
 class ReviewBaseFlow {
     remoteGit = DI.get<IRemoteGit>(SERVICE_IDENTIFIER.RemoteGitPluginService);
     git = DI.get<ILocalGit>(SERVICE_IDENTIFIER.LocalGitService);
-
+    
     /**
      * Initializes the repository
      * @param opts The options for the repository
      */
-    async initRepo(opts: any) {
-        await this.git.initializeRepo()
+    initRepo(opts: any) {
+        this.git.initializeRepo()
     };
     
     /**
      * Starts a feature branch
      * @param {string} name The name of the feature branch
      */
-    async startFeature (name: string){
-        await this.git.switchBranch(`develop`)
-        await this.git.createBranch(name, 'feature')
-        await this.git.pushToRemote(`feature/${name}`, true)
+    startFeature (name: string){
+        const prefix = config.prefixes.feature
+        this.git.switchBranch(config.branch.develop)
+        this.git.createBranch(name, prefix)
+        this.git.pushToRemote(`${prefix}/${name}`, true)
     }
     
     /**
@@ -29,16 +32,19 @@ class ReviewBaseFlow {
      * @param {} opts The options for the feature
      * @param {string} title The title of the feature
      */
-    async finishFeature (opts:any, title: string){
-        const {owner='kur0byte', repo = 'gitflow-ts'} = opts
-        const currentBranch = await this.git.getCurrentBranch()
+    async finishFeature (opts:any, name: string){
+        const {repoName, repoOwner} = config
+        const {develop} = config.branch
+        const prefix = config.prefixes.feature
+        // const currentBranch = await this.git.getCurrentBranch()
+        const {title, description} = await featurePullRequestInputs(`${prefix}/${name}`)
         await this.remoteGit.createPullRequest(
-            `feature/${title}`, 
-            'develop', 
-            `feature/${title}`,
-            'description',
-            owner, 
-            repo
+            `${prefix}/${name}`, 
+            develop, 
+            title,
+            description,
+            repoOwner, 
+            repoName
         );
     }
     
@@ -46,10 +52,11 @@ class ReviewBaseFlow {
      * Starts a release branch
      * @param {string} version The version of the release
      */
-    async startRelease (version: string){
-        await this.git.switchBranch(`develop`)
-        await this.git.createBranch(version, 'release')
-        await this.git.pushToRemote(`release/${name}`, true)
+    startRelease (version: string){
+        const prefix = config.prefixes.release
+        this.git.switchBranch(config.branch.develop)
+        this.git.createBranch(version, prefix)
+        this.git.pushToRemote(`${prefix}/${version}`, true)
     }
     
     /**
@@ -58,42 +65,49 @@ class ReviewBaseFlow {
      * @param {string} name The name of the release branch
      */
     async finishRelease (opts:any, name: string){
-        const {description, owner, repo} = opts
+        const {repoName, repoOwner} = config
+        const prefix = config.prefixes.release
+        const mainBranch = config.branch.main
+        const {title, description} = await featurePullRequestInputs(`${prefix}/${name}`)
         await this.remoteGit.createPullRequest(
-            `release/${name}`, 
-            'main', 
-            name,
+            `${prefix}/${name}`, 
+            mainBranch, 
+            title,
             description,
-            owner,
-            repo
-        );
+            repoOwner,
+            repoName
+        )
     }
-     
+
     /**
      * Starts a hotfix branch
      * @param {string} name The name of the hotfix branch
      */
-    async startHotfix(name: string){    
-        await this.git.switchBranch(`develop`)
-        await this.git.createBranch(name, 'hotfix')
-        await this.git.pushToRemote(`hotfix/${name}`, true)
+    startHotfix(name: string){    
+        const prefix = config.prefixes.hotfix
+        this.git.switchBranch(config.branch.main)
+        this.git.createBranch(name, prefix)
+        this.git.pushToRemote(`${prefix}/${name}`, true)
     }
     
     /**
      * Finishes a hotfix and merges it into main and develop
      * @param {string} version The version of the hotfix
      */
-    async finishHotfix (version: string){
+    finishHotfix (version: string){
+        const prefix = config.prefixes.hotfix
+        const {develop, main} = config.branch
+
         // merge and push remote branch to main and develop
-        await this.git.switchBranch('main')
-        await this.git.mergeBranch(`hotfix/${version}`)
-        await this.git.pushToRemote(`hotfix/${version}`)
-        await this.git.switchBranch('develop')
-        await this.git.mergeBranch(`hotfix/${version}`)
-        await this.git.pushToRemote(`hotfix/${version}`)
+        this.git.switchBranch(main)
+        this.git.mergeBranch(`${prefix}/${version}`)
+        this.git.pushToRemote(`${prefix}/${version}`)
+        this.git.switchBranch(develop)
+        this.git.mergeBranch(`${prefix}/${version}`)
+        this.git.pushToRemote(`${prefix}/${version}`)
     
         // deletes the hotfix branch
-        await this.git.deleteBranch(`hotfix/${version}`)
+        this.git.deleteBranch(`${prefix}/${version}`)
     }
 }
 
