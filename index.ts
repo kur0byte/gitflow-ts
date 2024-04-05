@@ -2,7 +2,7 @@
 
 import program from './src/core/cli';
 import 'reflect-metadata';
-import { ReviewBaseFlow } from './src/app/controllers';
+import { ReviewBaseFlow } from './src/core/controllers';
 
 // Initialize Gitflow in the repository
 program.command('init')
@@ -16,7 +16,7 @@ program.command('init')
 // Start a new feature
 program.command('feature <name>')
   .description('Start a new feature')
-  .action(async (name: any) => {
+  .action(async (name: any, opts = program.opts()) => {
     const controller = new ReviewBaseFlow()
     await controller.startFeature(name)
   });
@@ -24,11 +24,10 @@ program.command('feature <name>')
 // Finish a feature
 program.command('finish-feature <name>')
   .description('Finish a feature and merge it into develop')
-  // .option('-d, --description <description>', 'Description of the feature')
-  .action(async (name: any) => {
-    const options: any = program.opts()
+  .action(async (title: any) => {
+    const options = program.opts()
     const controller = new ReviewBaseFlow()
-    await controller.finishFeature(options, name)
+    await controller.finishFeature(options, title)
   })
 
 // Start a new release
@@ -59,10 +58,10 @@ program.command('hotfix <version>')
 // Finish a hotfix
 program.command('finish-hotfix <name> <version>')
   .description('Finish a hotfix and merge it into master')
-  .action(async (name: string, version: string) => {
+  .action(async (version: string) => {
     const options: any = program.opts()
     const controller = new ReviewBaseFlow()
-    await controller.finishHotfix(name, version)
+    await controller.finishHotfix(version)
 });
 
 program.parse(process.argv);
