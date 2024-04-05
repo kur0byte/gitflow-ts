@@ -1,11 +1,9 @@
-const REPOSITORY_IDENTIFIER = {
+export const REPOSITORY_IDENTIFIER = {
     RemoteGitRepository: Symbol.for('RemoteGitRepository'),
     LocalGitRepository: Symbol.for('LocalGitRepository'),
 }
 
-const SERVICE_IDENTIFIER = {
+export const SERVICE_IDENTIFIER = {
     LocalGitService: Symbol.for('LocalGitService'),
-    RemoteGitService: Symbol.for('RemoteGitService')
+    RemoteGitPluginService: Symbol.for('RemoteGitPluginService'),
 }
-
-export { SERVICE_IDENTIFIER, REPOSITORY_IDENTIFIER }

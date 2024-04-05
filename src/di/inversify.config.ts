@@ -1,19 +1,20 @@
-import { Container } from 'inversify';
-import { REPOSITORY_IDENTIFIER, SERVICE_IDENTIFIER } from './identifiers';
-
-import { ILocalGit, IRemoteGit } from '../interfaces';
-
-import LocalGitRepository from '../repositories/git/git.repository';
-import GithubBashRepository from '../repositories/github/github_bash.repository';
-
-import { LocalGitService, RemoteGitService } from '../services';
 import { config } from '../../config';
+import { Container } from 'inversify';
+
+import { ILocalGit, IRemoteGit } from '../core/interfaces';
+
+import LocalGitRepository from '../core/git/git.repository';
+import { GithubRestRepository, BASE_URL } from '../plugins/github';
+
+import LocalGitService from '../core/git/localGit.service';
+import {RemoteGitPluginService} from '../core/pluginManagers';
 
 export function initializeRepositories(container: Container, identifiers:any) {
   // Remote Git Host Factory
   switch (config.gitRemoteHost) {
     case 'github':
-      container.bind<IRemoteGit>(identifiers.RemoteGitRepository).to(GithubBashRepository);
+      container.bind(BASE_URL).toConstantValue("https://api.github.com");
+      container.bind<IRemoteGit>(identifiers.RemoteGitRepository).to(GithubRestRepository)
       break;
     case 'gitlab':
         console.log('gitlab not implemented yet')
@@ -30,6 +31,6 @@ export function initializeRepositories(container: Container, identifiers:any) {
 
 export function initializeServices(container: Container, identifiers: any) {
   container.bind(identifiers.LocalGitService).to(LocalGitService)
-  container.bind(identifiers.RemoteGitService).to(RemoteGitService)
+  container.bind<IRemoteGit>(identifiers.RemoteGitPluginService).to(RemoteGitPluginService)
 }
 

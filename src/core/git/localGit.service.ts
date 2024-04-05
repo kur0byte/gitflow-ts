@@ -1,12 +1,16 @@
 import { inject, injectable } from 'inversify';
 import { ILocalGit } from '../interfaces';
-import { REPOSITORY_IDENTIFIER } from '../di/identifiers';
+import { REPOSITORY_IDENTIFIER } from '../../di/identifiers';
 
 @injectable()
-class LocalGitService {
+export default class LocalGitService implements ILocalGit{
   constructor(
     @inject(REPOSITORY_IDENTIFIER.LocalGitRepository) private LocalGitRepository: ILocalGit
   ) {}
+
+    async getCurrentBranch(): Promise<string> {
+        return await this.LocalGitRepository.getCurrentBranch()
+    }
 
     async initializeRepo(): Promise<void> {
         await this.LocalGitRepository.initializeRepo()
@@ -31,7 +35,8 @@ class LocalGitService {
     async switchBranch(branch: string): Promise<void> {
         await this.LocalGitRepository.switchBranch(branch)
     }
+
+    getRemoteRepoName(): string | undefined {
+        return this.LocalGitRepository.getRemoteRepoName()
+    }
 }
-
-export default LocalGitService;
-
