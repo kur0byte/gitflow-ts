@@ -44,7 +44,7 @@ export default class LocalGitService implements ILocalGit{
         return this.LocalGitRepository.pull()
     }
 
-    setBranchUpstream(branch: string) {
+    setBranchUpstream(branch: string){
         return this.LocalGitRepository.setBranchUpstream(branch)
     }
 }
