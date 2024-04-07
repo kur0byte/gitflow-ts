@@ -7,9 +7,9 @@ export const config = {
         develop: process.env.DEVELOP_BRANCH || 'develop',
     },
     prefixes: {
-        feature: process.env.FEATURE_PREFIX || 'feature',
-        release: process.env.RELEASE_PREFIX || 'release',
-        hotfix: process.env.HOTFIX_PREFIX || 'hotfix'
+        feature: process.env.FEATURE_PREFIX || '',
+        release: process.env.RELEASE_PREFIX || '',
+        hotfix: process.env.HOTFIX_PREFIX || ''
     },
     gitRemoteHost: process.env.GIT_REMOTE_HOST || 'github',
     plugins: {

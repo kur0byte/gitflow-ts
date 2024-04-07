@@ -65,4 +65,11 @@ export default class LocalGitRepository implements ILocalGit {
     const repoName = repoNameWithExtension?.split('.').shift();
     return repoName;
   }
+
+  pull() {
+    const command = 'ggpull'
+    const successMsg = 'Repository pulled successfully';
+    const errorMsg = 'Error pulling repository';
+    return syncExec(command, successMsg, errorMsg);
+  }
 }

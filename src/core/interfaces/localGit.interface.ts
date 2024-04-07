@@ -47,6 +47,11 @@ interface ILocalGit {
    * @returns The name of the repository
    */
   getRemoteRepoName(): any
+
+  /**
+   * Pulls the latest changes from the remote repository
+   */
+  pull(): any
 }
 export default ILocalGit;
   
