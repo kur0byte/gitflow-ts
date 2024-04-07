@@ -57,7 +57,9 @@ class ReviewBaseFlow {
         const prefix = config.prefixes.release
         const sourceBranchName = prefix ? `${prefix}/${version}` : version
         this.git.switchBranch(config.branch.develop)
+        this.git.pull()
         this.git.createBranch(version, prefix)
+        this.git.pull()
         this.git.pushToRemote(sourceBranchName, true)
     }
     
