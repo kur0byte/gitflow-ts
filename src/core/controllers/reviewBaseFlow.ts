@@ -22,9 +22,10 @@ class ReviewBaseFlow {
      */
     startFeature (name: string){
         const prefix = config.prefixes.feature
+        const sourceBranchName = prefix ? `${prefix}/${name}` : name
         this.git.switchBranch(config.branch.develop)
         this.git.createBranch(name, prefix)
-        this.git.pushToRemote(`${prefix}/${name}`, true)
+        this.git.pushToRemote(sourceBranchName, true)
     }
     
     /**
@@ -36,10 +37,10 @@ class ReviewBaseFlow {
         const {repoName, repoOwner} = config
         const {develop} = config.branch
         const prefix = config.prefixes.feature
-        // const currentBranch = await this.git.getCurrentBranch()
-        const {title, description} = await featurePullRequestInputs(`${prefix}/${name}`)
+        const sourceBranchName = prefix ? `${prefix}/${name}` : name
+        const {title, description} = await featurePullRequestInputs(sourceBranchName)
         await this.remoteGit.createPullRequest(
-            `${prefix}/${name}`, 
+            sourceBranchName, 
             develop, 
             title,
             description,
@@ -54,9 +55,10 @@ class ReviewBaseFlow {
      */
     startRelease (version: string){
         const prefix = config.prefixes.release
+        const sourceBranchName = prefix ? `${prefix}/${version}` : version
         this.git.switchBranch(config.branch.develop)
         this.git.createBranch(version, prefix)
-        this.git.pushToRemote(`${prefix}/${version}`, true)
+        this.git.pushToRemote(sourceBranchName, true)
     }
     
     /**
@@ -64,16 +66,18 @@ class ReviewBaseFlow {
      * @param opts The options for the release
      * @param {string} name The name of the release branch
      */
-    async finishRelease (opts:any, name: string){
+    async finishRelease (opts:any, version: string){
         const {repoName, repoOwner} = config
         const prefix = config.prefixes.release
+        const sourceBranchName = prefix ? `${prefix}/${version}` : version
         const mainBranch = config.branch.main
-        const {title, description} = await featurePullRequestInputs(`${prefix}/${name}`)
+        // const {title, description} = await featurePullRequestInputs(sourceBranchName)
         await this.remoteGit.createPullRequest(
-            `${prefix}/${name}`, 
+            sourceBranchName, 
             mainBranch, 
-            title,
-            description,
+            sourceBranchName,
+            // TODO: add description
+            'release description',
             repoOwner,
             repoName
         )
@@ -85,9 +89,10 @@ class ReviewBaseFlow {
      */
     startHotfix(name: string){    
         const prefix = config.prefixes.hotfix
+        const sourceBranchName = prefix ? `${prefix}/${name}` : name
         this.git.switchBranch(config.branch.main)
         this.git.createBranch(name, prefix)
-        this.git.pushToRemote(`${prefix}/${name}`, true)
+        this.git.pushToRemote(sourceBranchName, true)
     }
     
     /**
@@ -96,18 +101,19 @@ class ReviewBaseFlow {
      */
     finishHotfix (version: string){
         const prefix = config.prefixes.hotfix
+        const sourceBranchName = prefix ? `${prefix}/${version}` : version
         const {develop, main} = config.branch
 
         // merge and push remote branch to main and develop
         this.git.switchBranch(main)
-        this.git.mergeBranch(`${prefix}/${version}`)
-        this.git.pushToRemote(`${prefix}/${version}`)
+        this.git.mergeBranch(sourceBranchName)
+        this.git.pushToRemote(sourceBranchName)
         this.git.switchBranch(develop)
-        this.git.mergeBranch(`${prefix}/${version}`)
-        this.git.pushToRemote(`${prefix}/${version}`)
+        this.git.mergeBranch(sourceBranchName)
+        this.git.pushToRemote(sourceBranchName)
     
         // deletes the hotfix branch
-        this.git.deleteBranch(`${prefix}/${version}`)
+        this.git.deleteBranch(sourceBranchName)
     }
 }
 

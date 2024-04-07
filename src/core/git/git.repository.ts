@@ -49,7 +49,8 @@ export default class LocalGitRepository implements ILocalGit {
   }
   
   createBranch(name:string, type:string) {
-    const command = `git checkout -b ${type}/${name}`;
+    let branchName = type ? `${type}/${name}` : name;
+    const command = `git checkout -b ${branchName}`;
     const successMsg = `Branch ${name} created successfully`;
     const errorMsg = `Error creating branch ${name}`;
     return syncExec(command, successMsg, errorMsg);
