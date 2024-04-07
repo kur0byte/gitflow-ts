@@ -72,4 +72,11 @@ export default class LocalGitRepository implements ILocalGit {
     const errorMsg = 'Error pulling repository';
     return syncExec(command, successMsg, errorMsg);
   }
+
+  setBranchUpstream(branch: string) {
+    const command = `git branch --set-upstream-to=origin/${branch}`
+    const successMsg = `Branch ${branch} set as upstream successfully`;
+    const errorMsg = `Error setting branch ${branch} as upstream`;
+    return syncExec(command, successMsg, errorMsg);
+  }
 }
