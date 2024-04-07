@@ -56,12 +56,12 @@ program.command('hotfix <version>')
   });
 
 // Finish a hotfix
-program.command('finish-hotfix <name> <version>')
+program.command('finish-hotfix <name>')
   .description('Finish a hotfix and merge it into master')
-  .action(async (version: string) => {
+  .action(async (name: string) => {
     const options: any = program.opts()
     const controller = new ReviewBaseFlow()
-    await controller.finishHotfix(version)
+    await controller.finishHotfix(name)
 });
 
 program.parse(process.argv);

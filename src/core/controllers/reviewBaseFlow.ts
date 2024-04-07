@@ -101,9 +101,9 @@ class ReviewBaseFlow {
      * Finishes a hotfix and merges it into main and develop
      * @param {string} version The version of the hotfix
      */
-    finishHotfix (version: string){
+    finishHotfix (name: string){
         const prefix = config.prefixes.hotfix
-        const sourceBranchName = prefix ? `${prefix}/${version}` : version
+        const sourceBranchName = prefix ? `${prefix}/${name}` : name
         const {develop, main} = config.branch
 
         // merge and push remote branch to main and develop
