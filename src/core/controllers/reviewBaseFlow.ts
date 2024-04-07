@@ -60,6 +60,7 @@ class ReviewBaseFlow {
         this.git.pull()
         this.git.createBranch(version, prefix)
         this.git.pull()
+        this.git.setBranchUpstream(sourceBranchName)
         this.git.pushToRemote(sourceBranchName, true)
     }
     

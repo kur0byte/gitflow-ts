@@ -42,7 +42,7 @@ export default class LocalGitRepository implements ILocalGit {
   }
 
   pushToRemote(toBranch: string, upStream: boolean = false) {
-    const command = `git push ${upStream ? '--set-upstream' : ''} origin ${toBranch}`
+    const command = `git push origin ${toBranch}`
     const successMsg = `Branch ${toBranch} pushed successfully`;
     const errorMsg = `Error pushing branch ${toBranch}`;
     return syncExec(command, successMsg, errorMsg);
@@ -70,6 +70,13 @@ export default class LocalGitRepository implements ILocalGit {
     const command = 'git pull'
     const successMsg = 'Repository pulled successfully';
     const errorMsg = 'Error pulling repository';
+    return syncExec(command, successMsg, errorMsg);
+  }
+
+  setBranchUpstream(branch: string) {
+    const command = `git branch -u origin/${branch} ${branch}`
+    const successMsg = `Branch ${branch} set as upstream successfully`;
+    const errorMsg = `Error setting branch ${branch} as upstream`;
     return syncExec(command, successMsg, errorMsg);
   }
 }
