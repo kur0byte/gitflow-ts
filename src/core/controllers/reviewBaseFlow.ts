@@ -27,7 +27,6 @@ class ReviewBaseFlow {
         this.git.pull()
         this.git.createBranch(name, prefix)
         this.git.pushToRemote(sourceBranchName, true)
-        this.git.setBranchUpstream(sourceBranchName)
     }
     
     /**
@@ -61,7 +60,6 @@ class ReviewBaseFlow {
         this.git.switchBranch(config.branch.develop)
         this.git.pull()
         this.git.createBranch(version, prefix)
-        // this.git.setBranchUpstream(sourceBranchName)
         this.git.pushToRemote(sourceBranchName, true)
     }
     
@@ -75,7 +73,6 @@ class ReviewBaseFlow {
         const prefix = config.prefixes.release
         const sourceBranchName = prefix ? `${prefix}/${version}` : version
         const mainBranch = config.branch.main
-        // const {title, description} = await featurePullRequestInputs(sourceBranchName)
         await this.remoteGit.createPullRequest(
             sourceBranchName, 
             mainBranch, 
@@ -111,9 +108,11 @@ class ReviewBaseFlow {
 
         // merge and push remote branch to main and develop
         this.git.switchBranch(main)
+        this.git.pull()
         this.git.mergeBranch(sourceBranchName)
         this.git.pushToRemote(sourceBranchName)
         this.git.switchBranch(develop)
+        this.git.pull()
         this.git.mergeBranch(sourceBranchName)
         this.git.pushToRemote(sourceBranchName)
     
