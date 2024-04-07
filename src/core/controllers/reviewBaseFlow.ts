@@ -114,9 +114,6 @@ class ReviewBaseFlow {
         this.git.pull()
         this.git.mergeBranch(sourceBranchName)
         this.git.pushToRemote(sourceBranchName)
-    
-        // deletes the hotfix branch
-        // this.git.deleteBranch(sourceBranchName)
     }
 }
 
