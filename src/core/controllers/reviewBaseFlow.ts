@@ -106,17 +106,17 @@ class ReviewBaseFlow {
         const {develop, main} = config.branch
 
         // merge and push remote branch to main and develop
-        this.git.switchBranch(main)
+        this.git.switchBranch(develop)
         this.git.pull()
         this.git.mergeBranch(sourceBranchName)
         this.git.pushToRemote(sourceBranchName)
-        this.git.switchBranch(develop)
+        this.git.switchBranch(main)
         this.git.pull()
         this.git.mergeBranch(sourceBranchName)
         this.git.pushToRemote(sourceBranchName)
     
         // deletes the hotfix branch
-        this.git.deleteBranch(sourceBranchName)
+        // this.git.deleteBranch(sourceBranchName)
     }
 }
 
