@@ -67,7 +67,7 @@ export default class LocalGitRepository implements ILocalGit {
   }
 
   pull() {
-    const command = 'ggpull'
+    const command = 'git pull'
     const successMsg = 'Repository pulled successfully';
     const errorMsg = 'Error pulling repository';
     return syncExec(command, successMsg, errorMsg);
