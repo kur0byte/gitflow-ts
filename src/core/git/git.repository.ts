@@ -42,14 +42,15 @@ export default class LocalGitRepository implements ILocalGit {
   }
 
   pushToRemote(toBranch: string, upStream: boolean = false) {
-    const command = `git push ${upStream ? '--set-upstream' : ''} origin ${toBranch}`
+    const command = `git push origin ${toBranch}`
     const successMsg = `Branch ${toBranch} pushed successfully`;
     const errorMsg = `Error pushing branch ${toBranch}`;
     return syncExec(command, successMsg, errorMsg);
   }
   
   createBranch(name:string, type:string) {
-    const command = `git checkout -b ${type}/${name}`;
+    let branchName = type ? `${type}/${name}` : name;
+    const command = `git checkout -b ${branchName}`;
     const successMsg = `Branch ${name} created successfully`;
     const errorMsg = `Error creating branch ${name}`;
     return syncExec(command, successMsg, errorMsg);
@@ -63,5 +64,19 @@ export default class LocalGitRepository implements ILocalGit {
     const repoNameWithExtension = url.split('/').pop();
     const repoName = repoNameWithExtension?.split('.').shift();
     return repoName;
+  }
+
+  pull() {
+    const command = 'git pull'
+    const successMsg = 'Repository pulled successfully';
+    const errorMsg = 'Error pulling repository';
+    return syncExec(command, successMsg, errorMsg);
+  }
+
+  setBranchUpstream(branch: string) {
+    const command = `git branch -u origin/${branch} ${branch}`
+    const successMsg = `Branch ${branch} set as upstream successfully`;
+    const errorMsg = `Error setting branch ${branch} as upstream`;
+    return syncExec(command, successMsg, errorMsg);
   }
 }

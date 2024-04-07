@@ -47,6 +47,17 @@ interface ILocalGit {
    * @returns The name of the repository
    */
   getRemoteRepoName(): any
+
+  /**
+   * Pulls the latest changes from the remote repository
+   */
+  pull(): any
+
+  /**
+   * Sets the upstream branch for the current branch
+   * @param {string} branch The name of the upstream branch
+   */
+  setBranchUpstream(branch: string): any
 }
 export default ILocalGit;
   

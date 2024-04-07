@@ -39,4 +39,12 @@ export default class LocalGitService implements ILocalGit{
     getRemoteRepoName(): string | undefined {
         return this.LocalGitRepository.getRemoteRepoName()
     }
+
+    pull() {
+        return this.LocalGitRepository.pull()
+    }
+
+    setBranchUpstream(branch: string){
+        return this.LocalGitRepository.setBranchUpstream(branch)
+    }
 }
