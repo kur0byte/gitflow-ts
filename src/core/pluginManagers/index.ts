@@ -1,3 +1,3 @@
-import RemoteGitPluginService from "./remoteGitPlugin.Service";
+import RemoteGitPluginService from "./remoteGitPlugin.service";
 
 export {RemoteGitPluginService}
