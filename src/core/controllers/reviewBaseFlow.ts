@@ -1,6 +1,5 @@
 import { ILocalGit, IRemoteGit } from "../interfaces";
 import {container as DI, SERVICE_IDENTIFIER} from "../../di";
-import inquirer, { PromptModule } from "inquirer"
 import { config } from "../../../config";
 import { featurePullRequestInputs } from "../../utils/prFlow.handler";
 
