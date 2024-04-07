@@ -26,7 +26,6 @@ class ReviewBaseFlow {
         this.git.pull()
         this.git.createBranch(name, prefix)
         this.git.pushToRemote(sourceBranchName, true)
-        this.git.setBranchUpstream(sourceBranchName)
     }
     
     /**
@@ -60,7 +59,6 @@ class ReviewBaseFlow {
         this.git.switchBranch(config.branch.develop)
         this.git.pull()
         this.git.createBranch(version, prefix)
-        // this.git.setBranchUpstream(sourceBranchName)
         this.git.pushToRemote(sourceBranchName, true)
     }
     
@@ -74,7 +72,6 @@ class ReviewBaseFlow {
         const prefix = config.prefixes.release
         const sourceBranchName = prefix ? `${prefix}/${version}` : version
         const mainBranch = config.branch.main
-        // const {title, description} = await featurePullRequestInputs(sourceBranchName)
         await this.remoteGit.createPullRequest(
             sourceBranchName, 
             mainBranch, 
@@ -94,6 +91,7 @@ class ReviewBaseFlow {
         const prefix = config.prefixes.hotfix
         const sourceBranchName = prefix ? `${prefix}/${name}` : name
         this.git.switchBranch(config.branch.main)
+        this.git.pull()
         this.git.createBranch(name, prefix)
         this.git.pushToRemote(sourceBranchName, true)
     }
@@ -102,16 +100,18 @@ class ReviewBaseFlow {
      * Finishes a hotfix and merges it into main and develop
      * @param {string} version The version of the hotfix
      */
-    finishHotfix (version: string){
+    finishHotfix (name: string){
         const prefix = config.prefixes.hotfix
-        const sourceBranchName = prefix ? `${prefix}/${version}` : version
+        const sourceBranchName = prefix ? `${prefix}/${name}` : name
         const {develop, main} = config.branch
 
         // merge and push remote branch to main and develop
         this.git.switchBranch(main)
+        this.git.pull()
         this.git.mergeBranch(sourceBranchName)
         this.git.pushToRemote(sourceBranchName)
         this.git.switchBranch(develop)
+        this.git.pull()
         this.git.mergeBranch(sourceBranchName)
         this.git.pushToRemote(sourceBranchName)
     
