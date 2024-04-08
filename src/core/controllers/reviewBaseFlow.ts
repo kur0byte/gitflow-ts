@@ -52,7 +52,7 @@ class ReviewBaseFlow {
     /**
      * Starts a release branch
      * @param {string} version The version of the release
-     */ 
+     */
     startRelease (version: string){
         const prefix = config.prefixes.release
         const sourceBranchName = prefix ? `${prefix}/${version}` : version
