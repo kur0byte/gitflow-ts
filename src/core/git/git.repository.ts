@@ -41,8 +41,10 @@ export default class LocalGitRepository implements ILocalGit {
     return syncExec(command, successMsg, errorMsg);
   }
 
-  pushToRemote(toBranch: string, upStream?: boolean) {
-    const command = `git push ${upStream ?? '-u'} origin ${toBranch}`
+  pushToRemote(toBranch: string, upStream: boolean = false) {
+    const command = upStream 
+    ? `git push -u origin ${toBranch}` 
+    : `git push origin ${toBranch}`;
     const successMsg = `Branch ${toBranch} pushed successfully`;
     const errorMsg = `Error pushing branch ${toBranch}`;
     return syncExec(command, successMsg, errorMsg);
